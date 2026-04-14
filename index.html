@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Norte Padel Club — Córdoba</title>
+  <meta name="description" content="6 canchas techadas, iluminación LED, torneos y clases. El club de padel de Córdoba Norte.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;0,800;0,900;1,800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ════════════════════════════════════
+   RESET + VARIABLES
+════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg:           #0C0B09;
+  --bg-card:      #131109;
+  --bg-raised:    #1C1A14;
+  --text:         #EDE8DC;
+  --text-mid:     #A09680;
+  --text-low:     #5A5040;
+  --accent:       #C49A3C;
+  --accent-hi:    #DDB86A;
+  --accent-dim:   rgba(196,154,60,.1);
+  --accent-line:  rgba(196,154,60,.28);
+  --line:         rgba(237,232,220,.07);
+  --line-hi:      rgba(237,232,220,.13);
+
+  --f-disp: 'Barlow Condensed', sans-serif;
+  --f-body: 'DM Sans', sans-serif;
+  --f-mono: 'DM Mono', monospace;
+
+  --ease-out:  cubic-bezier(0.16,1,0.3,1);
+  --ease-back: cubic-bezier(0.34,1.56,0.64,1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--f-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Film grain */
+body::after {
+  content:'';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: .028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+img { display:block; max-width:100%; }
+a   { text-decoration:none; color:inherit; }
+
+/* ════════════════════════════════════
+   SCROLL REVEAL ENGINE
+════════════════════════════════════ */
+.r { opacity:0; transform:translateY(32px); transition: opacity .85s var(--ease-out), transform .85s var(--ease-out); }
+.rl { opacity:0; transform:translateX(-44px); transition: opacity .85s var(--ease-out), transform .85s var(--ease-out); }
+.rr { opacity:0; transform:translateX(44px); transition: opacity .85s var(--ease-out), transform .85s var(--ease-out); }
+.r.on, .rl.on, .rr.on { opacity:1; transform:translate(0); }
+
+/* Stagger children */
+.sg > * { opacity:0; transform:translateY(28px); transition: opacity .65s var(--ease-out), transform .65s var(--ease-out); }
+.sg.on > *:nth-child(1)  { opacity:1; transform:none; transition-delay:.08s; }
+.sg.on > *:nth-child(2)  { opacity:1; transform:none; transition-delay:.18s; }
+.sg.on > *:nth-child(3)  { opacity:1; transform:none; transition-delay:.28s; }
+.sg.on > *:nth-child(4)  { opacity:1; transform:none; transition-delay:.38s; }
+.sg.on > *:nth-child(5)  { opacity:1; transform:none; transition-delay:.48s; }
+.sg.on > *:nth-child(6)  { opacity:1; transform:none; transition-delay:.58s; }
+
+/* ════════════════════════════════════
+   NAVIGATION
+════════════════════════════════════ */
+.nav {
+  position: fixed; top:0; left:0; right:0; z-index:900;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 1.6rem 2.5rem;
+  transition: padding .4s var(--ease-out), background .4s, border-color .4s;
+  border-bottom: 1px solid transparent;
+}
+.nav.s {
+  padding: .9rem 2.5rem;
+  background: rgba(12,11,9,.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-color: var(--line);
+}
+
+.nav-logo {
+  font-family: var(--f-disp);
+  font-size: 1.15rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  user-select: none;
+}
+.nav-logo b { color: var(--accent); }
+
+.nav-links {
+  list-style:none;
+  display:flex; gap: 2.5rem;
+}
+.nav-links a {
+  font-size: .78rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--text-mid);
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+.nav-btn {
+  font-family: var(--f-disp);
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  padding: .55rem 1.5rem;
+  border: 1px solid var(--accent-line);
+  color: var(--accent);
+  cursor:pointer;
+  transition: background .2s, color .2s;
+}
+.nav-btn:hover { background: var(--accent); color: var(--bg); }
+
+.burger {
+  display:none;
+  flex-direction:column; gap:5px; cursor:pointer; padding:4px;
+}
+.burger span {
+  display:block; width:24px; height:2px;
+  background: var(--text);
+  transition: transform .3s, opacity .3s;
+}
+
+/* Mobile overlay */
+.mob-nav {
+  display:none;
+  position:fixed; inset:0; z-index:899;
+  background: var(--bg);
+  flex-direction:column; align-items:center; justify-content:center; gap:2.5rem;
+}
+.mob-nav.open { display:flex; }
+.mob-nav a {
+  font-family: var(--f-disp);
+  font-size: 2.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  transition: color .2s;
+}
+.mob-nav a:hover { color: var(--accent); }
+
+/* ════════════════════════════════════
+   HERO
+════════════════════════════════════ */
+.hero {
+  position:relative; min-height:100vh;
+  display:flex; flex-direction:column;
+  justify-content:flex-end;
+  padding: 0 2.5rem 4.5rem;
+  overflow:hidden;
+}
+
+.hero-bg {
+  position:absolute; inset:0; z-index:0;
+}
+.hero-bg img {
+  width:100%; height:100%;
+  object-fit:cover; object-position:center 30%;
+  will-change:transform;
+  filter: saturate(.65) brightness(.55);
+}
+/* Two-layer solid overlay — no decorative gradient */
+.hero-bg::before {
+  content:'';
+  position:absolute; inset:0;
+  background: rgba(12,11,9,.45);
+  z-index:1;
+}
+.hero-bg::after {
+  content:'';
+  position:absolute;
+  bottom:0; left:0; right:0;
+  height: 70%;
+  background: var(--bg);
+  -webkit-mask-image: linear-gradient(to top, black 40%, transparent 100%);
+  mask-image: linear-gradient(to top, black 40%, transparent 100%);
+  z-index:2;
+}
+
+/* Floating card top-right */
+.hero-card {
+  position:absolute; top:7.5rem; right:2.5rem; z-index:4;
+  border: 1px solid var(--line-hi);
+  background: rgba(12,11,9,.65);
+  backdrop-filter: blur(14px);
+  padding: 1.5rem 1.75rem;
+  display:flex; flex-direction:column; gap:1.2rem;
+  animation: fadein 1s var(--ease-out) 1.6s both;
+}
+.hero-card-row { display:flex; flex-direction:column; gap:.2rem; }
+.hero-card-val {
+  font-family: var(--f-mono);
+  font-size: 1.8rem; font-weight:500;
+  color: var(--accent); line-height:1;
+}
+.hero-card-lbl {
+  font-size: .625rem; text-transform:uppercase;
+  letter-spacing:.12em; color: var(--text-low);
+}
+.hero-card-sep { height:1px; background: var(--line); }
+
+/* Hero content */
+.hero-inner { position:relative; z-index:5; }
+
+.hero-eye {
+  display:block;
+  font-family: var(--f-mono);
+  font-size: .7rem; text-transform:uppercase;
+  letter-spacing:.18em; color: var(--accent);
+  margin-bottom: 1.25rem;
+  animation: fadeup .7s var(--ease-out) .3s both;
+}
+
+.hero-title {
+  font-family: var(--f-disp);
+  font-size: clamp(5rem, 16vw, 13.5rem);
+  font-weight: 900;
+  line-height: .875;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+}
+.hero-title .ln { display:block; overflow:hidden; }
+.hero-title .ln span { display:block; animation: lineup 1s var(--ease-out) both; }
+.hero-title .ln:nth-child(1) span { animation-delay:.38s; }
+.hero-title .ln:nth-child(2) span { animation-delay:.52s; color:var(--accent); }
+.hero-title .ln:nth-child(3) span { animation-delay:.66s; }
+
+.hero-foot {
+  display:flex; align-items:flex-end; justify-content:space-between;
+  gap:2rem; margin-top:2.25rem;
+  animation: fadeup .8s var(--ease-out) 1s both;
+}
+.hero-sub {
+  font-size: .9375rem;
+  color: var(--text-mid);
+  max-width:360px; line-height:1.75;
+}
+.hero-ctas { display:flex; gap:.875rem; flex-shrink:0; }
+
+/* ════════════════════════════════════
+   BUTTONS
+════════════════════════════════════ */
+.btn {
+  font-family: var(--f-disp);
+  font-size: .825rem; font-weight:700;
+  text-transform:uppercase; letter-spacing:.12em;
+  padding: .9rem 2rem;
+  cursor:pointer; border:none; outline:none;
+  display:inline-flex; align-items:center; gap:.5rem;
+  transition: all .22s;
+  will-change: transform;
+}
+.btn-primary { background: var(--accent); color: var(--bg); }
+.btn-primary:hover {
+  background: var(--accent-hi);
+  box-shadow: 0 8px 28px rgba(196,154,60,.28);
+}
+.btn-outline {
+  background:transparent; color:var(--text);
+  border: 1px solid var(--line-hi);
+}
+.btn-outline:hover {
+  border-color: var(--text-mid);
+  background: rgba(237,232,220,.04);
+}
+
+/* ════════════════════════════════════
+   MARQUEE TICKER
+════════════════════════════════════ */
+.ticker {
+  overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  padding: .85rem 0;
+  background: var(--bg-card);
+}
+.ticker-track {
+  display:flex; gap:0; white-space:nowrap;
+  animation: marquee 28s linear infinite;
+  width: max-content;
+}
+.ticker-item {
+  display:flex; align-items:center; gap:2.5rem;
+  padding: 0 2.5rem;
+}
+.ticker-item span {
+  font-family: var(--f-disp);
+  font-size: .8rem; font-weight:700;
+  text-transform:uppercase; letter-spacing:.14em;
+  color: var(--text-low);
+}
+.ticker-dot {
+  width:4px; height:4px; border-radius:50%;
+  background: var(--accent); opacity:.7; flex-shrink:0;
+}
+
+/* ════════════════════════════════════
+   STATS STRIP
+════════════════════════════════════ */
+.stats {
+  display:grid; grid-template-columns: repeat(4,1fr);
+}
+.stat {
+  padding: 2.5rem 2rem;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  position:relative; overflow:hidden;
+  transition: background .3s;
+}
+.stat:last-child { border-right:none; }
+.stat::before {
+  content:'';
+  position:absolute; left:0; top:0; bottom:0;
+  width:2px; background: var(--accent);
+  transform: scaleY(0); transform-origin:bottom;
+  transition: transform .4s var(--ease-out);
+}
+.stat:hover { background: var(--accent-dim); }
+.stat:hover::before { transform: scaleY(1); }
+
+.stat-n {
+  font-family: var(--f-mono);
+  font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+  font-weight:500; color: var(--accent); line-height:1;
+  display:block;
+}
+.stat-l {
+  font-size: .72rem; text-transform:uppercase;
+  letter-spacing:.1em; color: var(--text-mid);
+  margin-top:.4rem; display:block;
+}
+.stat-d {
+  font-size: .78rem; color: var(--text-low);
+  margin-top:.2rem; display:block;
+}
+
+/* ════════════════════════════════════
+   SECTION COMMONS
+════════════════════════════════════ */
+.sec { padding: clamp(4rem,8vw,8rem) 2.5rem; }
+.sec-eye {
+  font-family: var(--f-mono);
+  font-size: .65rem; text-transform:uppercase;
+  letter-spacing:.17em; color: var(--accent);
+  display:flex; align-items:center; gap:.75rem;
+  margin-bottom:.875rem;
+}
+.sec-eye::before {
+  content:''; display:block;
+  width:22px; height:1px; background:var(--accent);
+}
+.sec-title {
+  font-family: var(--f-disp);
+  font-size: clamp(2.75rem, 6vw, 5.25rem);
+  font-weight:900; line-height:.93;
+  letter-spacing:-.025em; text-transform:uppercase;
+}
+.sec-desc {
+  font-size: .9375rem;
+  color: var(--text-mid); max-width:440px;
+  line-height:1.75; margin-top:1.25rem;
+}
+
+/* ════════════════════════════════════
+   COURTS
+════════════════════════════════════ */
+.courts { background: var(--bg-card); }
+.courts-hd {
+  display:flex; justify-content:space-between;
+  align-items:flex-end; margin-bottom:2.75rem; gap:2rem;
+}
+.courts-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1px; background:var(--line);
+  border:1px solid var(--line);
+}
+.court {
+  position:relative; overflow:hidden;
+  aspect-ratio:4/3; cursor:pointer;
+  background: var(--bg-raised);
+}
+.court img {
+  width:100%; height:100%; object-fit:cover;
+  transition: transform .7s var(--ease-out), filter .5s;
+  filter: brightness(.5) saturate(.6);
+}
+.court:hover img {
+  transform:scale(1.07);
+  filter: brightness(.62) saturate(.9);
+}
+.court-ov {
+  position:absolute; inset:0;
+  background: rgba(12,11,9,.72);
+  -webkit-mask-image: linear-gradient(to top, black 55%, transparent 100%);
+  mask-image: linear-gradient(to top, black 55%, transparent 100%);
+  padding:1.5rem;
+  display:flex; flex-direction:column; justify-content:flex-end;
+}
+.court-num {
+  font-family: var(--f-mono); font-size:.6rem;
+  text-transform:uppercase; letter-spacing:.15em;
+  color: var(--accent); margin-bottom:.4rem;
+}
+.court-name {
+  font-family: var(--f-disp);
+  font-size:1.6rem; font-weight:900;
+  text-transform:uppercase; letter-spacing:.02em; line-height:1;
+}
+.court-tags {
+  display:flex; gap:.5rem; margin-top:.75rem;
+  transform: translateY(6px); opacity:0;
+  transition: transform .3s var(--ease-out), opacity .3s;
+}
+.court:hover .court-tags { transform:none; opacity:1; }
+.court-tag {
+  font-family: var(--f-mono); font-size:.575rem;
+  text-transform:uppercase; letter-spacing:.09em;
+  padding:.28rem .6rem;
+  border:1px solid var(--accent-line); color:var(--text-mid);
+}
+
+/* ════════════════════════════════════
+   ABOUT
+════════════════════════════════════ */
+.about-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:6rem; align-items:center;
+}
+.about-visual { position:relative; }
+.about-img-main {
+  width:100%; aspect-ratio:3/4; object-fit:cover;
+  filter: saturate(.65) brightness(.8);
+}
+.about-img-pin {
+  position:absolute; bottom:-2.5rem; right:-2.5rem;
+  width:58%; aspect-ratio:4/3; object-fit:cover;
+  border:3px solid var(--bg);
+  filter: saturate(.65) brightness(.8);
+}
+.about-quote {
+  font-family: var(--f-disp);
+  font-size: clamp(1.8rem, 3.5vw, 2.9rem);
+  font-weight:900; line-height:1.02;
+  letter-spacing:-.02em; text-transform:uppercase;
+  margin-bottom:1.75rem;
+}
+.about-quote em { color:var(--accent); font-style:normal; }
+.about-body { font-size:.9rem; color:var(--text-mid); line-height:1.85; margin-bottom:1rem; }
+.about-feats { margin-top:1.75rem; display:flex; flex-direction:column; gap:.625rem; }
+.feat {
+  display:flex; align-items:center; gap:1rem;
+  padding:.875rem 1rem;
+  border:1px solid var(--line);
+  transition: border-color .2s, background .2s;
+}
+.feat:hover { border-color:var(--accent-line); background:var(--accent-dim); }
+.feat-ico { font-size:1rem; width:32px; text-align:center; flex-shrink:0; }
+.feat-txt { font-size:.85rem; color:var(--text-mid); }
+.feat-txt strong { display:block; color:var(--text); font-weight:500; margin-bottom:.05rem; }
+
+/* ════════════════════════════════════
+   SCHEDULE
+════════════════════════════════════ */
+.sched-bg { background: var(--bg-card); }
+.sched-wrap { margin-top:2.75rem; overflow-x:auto; }
+.sched-table {
+  width:100%; border-collapse:collapse;
+  border:1px solid var(--line);
+  font-size:.75rem;
+}
+.sched-table th, .sched-table td {
+  padding:.75rem 1rem;
+  border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  white-space:nowrap;
+  text-align:left;
+}
+.sched-table th {
+  font-family:var(--f-mono); font-size:.6rem;
+  text-transform:uppercase; letter-spacing:.1em;
+  color:var(--text-low); background:var(--bg-raised);
+}
+.sched-table td.th {
+  font-family:var(--f-mono); font-size:.7rem;
+  color:var(--text-mid); background:var(--bg-raised);
+}
+.slot-free {
+  color:var(--text); cursor:pointer;
+  border-left:2px solid var(--accent);
+  padding-left:.75rem;
+  transition: background .2s;
+}
+.slot-free:hover { background:var(--accent-dim); }
+.slot-occ {
+  color:var(--text-low);
+  border-left:2px solid var(--line-hi);
+  padding-left:.75rem;
+}
+.sched-foot {
+  margin-top:1.75rem; display:flex;
+  gap:1.25rem; align-items:center; flex-wrap:wrap;
+}
+.sched-note { font-size:.8rem; color:var(--text-mid); }
+.sched-note strong { color:var(--text); }
+
+/* ════════════════════════════════════
+   TESTIMONIALS
+════════════════════════════════════ */
+.testi-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1.5rem; margin-top:2.75rem;
+}
+.testi {
+  border:1px solid var(--line); padding:2rem;
+  position:relative;
+  transition: border-color .3s, background .3s, transform .35s var(--ease-back);
+}
+.testi:hover {
+  border-color:var(--accent-line);
+  background: var(--accent-dim);
+  transform: translateY(-5px);
+}
+.testi-stars {
+  position:absolute; top:2rem; right:2rem;
+  font-size:.7rem; color:var(--accent); letter-spacing:.06em;
+}
+.testi-qm {
+  font-family:var(--f-disp);
+  font-size:3.5rem; line-height:1;
+  color:var(--accent); opacity:.35; margin-bottom:.25rem;
+}
+.testi-text { font-size:.9rem; color:var(--text-mid); line-height:1.75; margin-bottom:1.5rem; }
+.testi-author { display:flex; align-items:center; gap:.75rem; }
+.testi-av {
+  width:38px; height:38px; border-radius:50%;
+  object-fit:cover; filter:saturate(.4);
+}
+.testi-name { font-size:.85rem; font-weight:500; color:var(--text); }
+.testi-role { font-size:.725rem; color:var(--text-low); }
+
+/* ════════════════════════════════════
+   CTA SECTION
+════════════════════════════════════ */
+.cta-sec {
+  position:relative; overflow:hidden;
+  background:var(--bg-raised);
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  text-align:center;
+  padding: clamp(5.5rem,10vw,10.5rem) 2.5rem;
+}
+/* Ambient glow — solid circle + blur, no gradient */
+.cta-sec::before {
+  content:'';
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:520px; height:520px;
+  background: rgba(196,154,60,.06);
+  border-radius:50%;
+  filter:blur(90px);
+  pointer-events:none;
+}
+.cta-lbl {
+  font-family:var(--f-mono); font-size:.65rem;
+  text-transform:uppercase; letter-spacing:.18em;
+  color:var(--text-mid); margin-bottom:1.25rem;
+}
+.cta-title {
+  font-family:var(--f-disp);
+  font-size:clamp(3rem,8.5vw,7.5rem);
+  font-weight:900; line-height:.88;
+  letter-spacing:-.025em; text-transform:uppercase;
+  margin-bottom:2.5rem;
+}
+.cta-title em { color:var(--accent); font-style:normal; }
+.cta-acts { display:flex; gap:1rem; justify-content:center; }
+
+/* ════════════════════════════════════
+   FOOTER
+════════════════════════════════════ */
+.footer {
+  padding: 3.5rem 2.5rem;
+  border-top:1px solid var(--line);
+  display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:3rem;
+}
+.f-brand-name {
+  font-family:var(--f-disp); font-size:1.35rem;
+  font-weight:900; text-transform:uppercase;
+  letter-spacing:.1em; margin-bottom:.875rem;
+}
+.f-brand-name b { color:var(--accent); }
+.f-brand p { font-size:.82rem; color:var(--text-low); line-height:1.8; }
+.f-col h4 {
+  font-family:var(--f-mono); font-size:.6rem;
+  text-transform:uppercase; letter-spacing:.15em;
+  color:var(--text-low); margin-bottom:1.25rem;
+}
+.f-col ul { list-style:none; display:flex; flex-direction:column; gap:.7rem; }
+.f-col ul li a { font-size:.83rem; color:var(--text-low); transition:color .2s; }
+.f-col ul li a:hover { color:var(--text); }
+
+.f-bottom {
+  padding: 1.25rem 2.5rem;
+  border-top:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.f-copy { font-size:.72rem; color:var(--text-low); }
+.socials { display:flex; gap:.75rem; }
+.soc {
+  width:34px; height:34px;
+  border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center;
+  font-size:.7rem; color:var(--text-low);
+  transition: all .2s; font-family:var(--f-mono);
+}
+.soc:hover { border-color:var(--accent-line); color:var(--accent); }
+
+/* ════════════════════════════════════
+   DIVIDER LINE
+════════════════════════════════════ */
+.hr { border:none; border-top:1px solid var(--line); }
+
+/* ════════════════════════════════════
+   KEYFRAMES
+════════════════════════════════════ */
+@keyframes fadeup  { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+@keyframes fadein  { from{opacity:0}                            to{opacity:1} }
+@keyframes lineup  { from{transform:translateY(108%)}           to{transform:none} }
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════ */
+@media (max-width:1100px) {
+  .about-grid { grid-template-columns:1fr; gap:3rem; }
+  .about-img-pin { display:none; }
+  .courts-grid { grid-template-columns:repeat(2,1fr); }
+  .footer { grid-template-columns:1fr 1fr; }
+  .hero-card { display:none; }
+}
+@media (max-width:768px) {
+  .nav-links, .nav-btn { display:none; }
+  .burger { display:flex; }
+  .stats { grid-template-columns:repeat(2,1fr); }
+  .stat { border-bottom:1px solid var(--line); }
+  .courts-grid { grid-template-columns:1fr; }
+  .testi-grid { grid-template-columns:1fr; }
+  .footer { grid-template-columns:1fr; }
+  .hero-foot { flex-direction:column; align-items:flex-start; }
+  .cta-acts { flex-direction:column; align-items:center; }
+  .f-bottom { flex-direction:column; gap:1rem; text-align:center; }
+  .sched-wrap table { font-size:.65rem; }
+}
+@media (prefers-reduced-motion:reduce) {
+  *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">NORTE <b>·</b> PADEL</div>
+  <ul class="nav-links">
+    <li><a href="#canchas">Canchas</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#turnos">Turnos</a></li>
+    <li><a href="#testimonios">Comunidad</a></li>
+  </ul>
+  <a class="nav-btn" href="#turnos">Reservar turno</a>
+  <div class="burger" id="burger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mob-nav" id="mobNav">
+  <a href="#canchas"     onclick="closeMenu()">Canchas</a>
+  <a href="#nosotros"    onclick="closeMenu()">Nosotros</a>
+  <a href="#turnos"      onclick="closeMenu()">Turnos</a>
+  <a href="#testimonios" onclick="closeMenu()">Comunidad</a>
+  <a href="#turnos"      onclick="closeMenu()" style="color:var(--accent)">Reservar</a>
+</div>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero" id="inicio">
+  <div class="hero-bg">
+    <img id="heroImg"
+      src="https://images.pexels.com/photos/32474981/pexels-photo-32474981.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1"
+      alt="Cancha de padel Norte Padel Club">
+  </div>
+
+  <div class="hero-card">
+    <div class="hero-card-row">
+      <span class="hero-card-val">6</span>
+      <span class="hero-card-lbl">Canchas</span>
+    </div>
+    <div class="hero-card-sep"></div>
+    <div class="hero-card-row">
+      <span class="hero-card-val">1.2K</span>
+      <span class="hero-card-lbl">Socios</span>
+    </div>
+    <div class="hero-card-sep"></div>
+    <div class="hero-card-row">
+      <span class="hero-card-val">24/7</span>
+      <span class="hero-card-lbl">Reservas</span>
+    </div>
+  </div>
+
+  <div class="hero-inner">
+    <span class="hero-eye">Córdoba Capital &nbsp;·&nbsp; Est. 2019</span>
+    <h1 class="hero-title">
+      <span class="ln"><span>Norte</span></span>
+      <span class="ln"><span>Padel</span></span>
+      <span class="ln"><span>Club</span></span>
+    </h1>
+    <div class="hero-foot">
+      <p class="hero-sub">
+        Seis canchas techadas con iluminación LED. El nivel que tu juego se merece, en el corazón de Córdoba Norte.
+      </p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#turnos">Reservar turno</a>
+        <a class="btn btn-outline" href="#canchas">Ver canchas</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ TICKER ══════════════════ -->
+<div class="ticker">
+  <div class="ticker-track">
+    <!-- duplicated for infinite loop -->
+    <div class="ticker-item"><span>Canchas Techadas</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Iluminación LED Pro</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Vestuarios Completos</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Torneos Mensuales</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Clases Particulares</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Reservas 24/7</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Bar &amp; Descanso</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Estacionamiento</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Canchas Techadas</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Iluminación LED Pro</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Vestuarios Completos</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Torneos Mensuales</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Clases Particulares</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Reservas 24/7</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Bar &amp; Descanso</span><span class="ticker-dot"></span></div>
+    <div class="ticker-item"><span>Estacionamiento</span><span class="ticker-dot"></span></div>
+  </div>
+</div>
+
+<!-- ══════════════════ STATS ══════════════════ -->
+<div class="stats sg" id="statsRow">
+  <div class="stat">
+    <span class="stat-n" data-to="6">0</span>
+    <span class="stat-l">Canchas</span>
+    <span class="stat-d">Techadas e iluminadas</span>
+  </div>
+  <div class="stat">
+    <span class="stat-n" data-to="1200" data-sfx="+">0</span>
+    <span class="stat-l">Socios activos</span>
+    <span class="stat-d">Creciendo cada mes</span>
+  </div>
+  <div class="stat">
+    <span class="stat-n" data-to="48">0</span>
+    <span class="stat-l">Torneos al año</span>
+    <span class="stat-d">Para todos los niveles</span>
+  </div>
+  <div class="stat">
+    <span class="stat-n" data-to="5" data-sfx=" años">0</span>
+    <span class="stat-l">En Córdoba</span>
+    <span class="stat-d">Desde 2019</span>
+  </div>
+</div>
+
+<!-- ══════════════════ CANCHAS ══════════════════ -->
+<section class="sec courts" id="canchas">
+  <div class="courts-hd">
+    <div class="r">
+      <div class="sec-eye">Instalaciones</div>
+      <h2 class="sec-title">Nuestras<br>Canchas</h2>
+    </div>
+    <p class="sec-desc rr" style="text-align:right">
+      Superficie reglamentaria de césped sintético, cristal lateral y fondo de vidrio templado.
+    </p>
+  </div>
+  <div class="courts-grid sg" id="courtsGrid">
+    <div class="court">
+      <img src="https://images.pexels.com/photos/32897040/pexels-photo-32897040.jpeg?auto=compress&cs=tinysrgb&w=700&h=525" alt="Cancha 1">
+      <div class="court-ov">
+        <span class="court-num">Cancha · 01</span>
+        <h3 class="court-name">La Principal</h3>
+        <div class="court-tags">
+          <span class="court-tag">Techada</span><span class="court-tag">LED</span><span class="court-tag">Premium</span>
+        </div>
+      </div>
+    </div>
+    <div class="court">
+      <img src="https://images.pexels.com/photos/4536850/pexels-photo-4536850.jpeg?auto=compress&cs=tinysrgb&w=700&h=525" alt="Cancha 2">
+      <div class="court-ov">
+        <span class="court-num">Cancha · 02</span>
+        <h3 class="court-name">La Panorámica</h3>
+        <div class="court-tags">
+          <span class="court-tag">Vidrio 360°</span><span class="court-tag">Techada</span>
+        </div>
+      </div>
+    </div>
+    <div class="court">
+      <img src="https://images.pexels.com/photos/33641987/pexels-photo-33641987.jpeg?auto=compress&cs=tinysrgb&w=700&h=525" alt="Cancha 3">
+      <div class="court-ov">
+        <span class="court-num">Cancha · 03</span>
+        <h3 class="court-name">La Nocturna</h3>
+        <div class="court-tags">
+          <span class="court-tag">LED Pro</span><span class="court-tag">Night Play</span>
+        </div>
+      </div>
+    </div>
+    <div class="court">
+      <img src="https://images.pexels.com/photos/9390282/pexels-photo-9390282.jpeg?auto=compress&cs=tinysrgb&w=700&h=525" alt="Cancha 4">
+      <div class="court-ov">
+        <span class="court-num">Cancha · 04</span>
+        <h3 class="court-name">La Arena</h3>
+        <div class="court-tags">
+          <span class="court-tag">Torneo</span><span class="court-tag">Tribuna</span>
+        </div>
+      </div>
+    </div>
+    <div class="court">
+      <img src="https://images.pexels.com/photos/34079547/pexels-photo-34079547.jpeg?auto=compress&cs=tinysrgb&w=700&h=525" alt="Cancha 5">
+      <div class="court-ov">
+        <span class="court-num">Cancha · 05</span>
+        <h3 class="court-name">La Escuela</h3>
+        <div class="court-tags">
+          <span class="court-tag">Clases</span><span class="court-tag">Iniciación</span>
+        </div>
+      </div>
+    </div>
+    <div class="court">
+      <img src="https://images.pexels.com/photos/31559322/pexels-photo-31559322.jpeg?auto=compress&cs=tinysrgb&w=700&h=525" alt="Cancha 6">
+      <div class="court-ov">
+        <span class="court-num">Cancha · 06</span>
+        <h3 class="court-name">La Indoor</h3>
+        <div class="court-tags">
+          <span class="court-tag">Indoor</span><span class="court-tag">A/C</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ ABOUT ══════════════════ -->
+<section class="sec" id="nosotros">
+  <div class="about-grid">
+    <div class="about-visual rl">
+      <img class="about-img-main"
+        src="https://images.pexels.com/photos/31559327/pexels-photo-31559327.jpeg?auto=compress&cs=tinysrgb&w=800&h=1067"
+        alt="Jugadores Norte Padel">
+      <img class="about-img-pin"
+        src="https://images.pexels.com/photos/3660204/pexels-photo-3660204.jpeg?auto=compress&cs=tinysrgb&w=500&h=375"
+        alt="Detalle raqueta">
+    </div>
+    <div class="rr">
+      <div class="sec-eye">Nosotros</div>
+      <h2 class="about-quote">
+        El juego cambia cuando el lugar <em>importa.</em>
+      </h2>
+      <p class="about-body">
+        Norte Padel Club nació en 2019 con una sola idea: crear un espacio donde jugar en serio no signifique dejar de disfrutarlo. Hoy somos el club referente de Córdoba Norte.
+      </p>
+      <p class="about-body">
+        A 10 minutos del centro, con 6 canchas techadas, vestuarios completos, bar y estacionamiento. Todo para que llegues, juegues y te vayas bien.
+      </p>
+      <div class="about-feats">
+        <div class="feat">
+          <span class="feat-ico">&#x1F3BE;</span>
+          <div class="feat-txt">
+            <strong>Clases para todos los niveles</strong>
+            Profesores certificados, grupos de hasta 4 personas
+          </div>
+        </div>
+        <div class="feat">
+          <span class="feat-ico">&#x1F3C6;</span>
+          <div class="feat-txt">
+            <strong>Torneos mensuales</strong>
+            Rankings internos y ligas interclubs de la ciudad
+          </div>
+        </div>
+        <div class="feat">
+          <span class="feat-ico">&#x1F4F1;</span>
+          <div class="feat-txt">
+            <strong>Reservas online 24/7</strong>
+            Por la web, app o WhatsApp directo
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ SCHEDULE ══════════════════ -->
+<section class="sec sched-bg" id="turnos">
+  <div class="r">
+    <div class="sec-eye">Disponibilidad</div>
+    <h2 class="sec-title">Próximos<br>Turnos</h2>
+    <p class="sec-desc">Hacé click en cualquier turno libre para reservar, o escribinos al WhatsApp.</p>
+  </div>
+  <div class="sched-wrap r">
+    <table class="sched-table">
+      <thead>
+        <tr>
+          <th>Hora</th>
+          <th>Lunes</th>
+          <th>Martes</th>
+          <th>Miércoles</th>
+          <th>Jueves</th>
+          <th>Viernes</th>
+          <th>Sábado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="th">08:00</td>
+          <td class="slot-free" onclick="bookSlot(this)">C1 · Libre</td>
+          <td class="slot-occ">Reservado</td>
+          <td class="slot-free" onclick="bookSlot(this)">C2 · Libre</td>
+          <td class="slot-occ">Reservado</td>
+          <td class="slot-free" onclick="bookSlot(this)">C1 · Libre</td>
+          <td class="slot-occ">Reservado</td>
+        </tr>
+        <tr>
+          <td class="th">10:00</td>
+          <td class="slot-occ">Reservado</td>
+          <td class="slot-free" onclick="bookSlot(this)">C3 · Libre</td>
+          <td class="slot-occ">Reservado</td>
+          <td class="slot-free" onclick="bookSlot(this)">C1 · Libre</td>
+          <td class="slot-occ">Reservado</td>
+          <td class="slot-free" onclick="bookSlot(this)">C4 · Libre</td>
+        </tr>
+        <tr>
+          <td class="th">14:00</td>
+          <td class="slot-free" onclick="bookSlot(this)">C2 · Libre</td>
+          <td class="slot-free" onclick="bookSlot(this)">C1 · Libre</td>
+          <td class="slot-occ">Reservado</td>
+          <td class="slot-free" onclick="bookSlot(this)">C3 · Libre</td>
+          <td class="slot-free" onclick="bookSlot(this)">C2 · Libre</td>
+          <td class="slot-occ">Reservado</td>
+        </tr>
+        <tr>
+          <td class="th">17:00</td>
+          <td class="slot-occ">Reservado</td>
+          <td class="slot-free" onclick="bookSlot(this)">C4 · Libre</td>
+          <td class="slot-free" onclick="bookSlot(this)">C1 · Libre</td>
+          <td class="slot-occ">Reservado</td>
+          <td class="slot-free" onclick="bookSlot(this)">C5 · Libre</td>
+          <td class="slot-free" onclick="bookSlot(this)">C2 · Libre</td>
+        </tr>
+        <tr>
+          <td class="th">20:00</td>
+          <td class="slot-free" onclick="bookSlot(this)">C1 · Libre</td>
+          <td class="slot-occ">Reservado</td>
+          <td class="slot-free" onclick="bookSlot(this)">C3 · Libre</td>
+          <td class="slot-free" onclick="bookSlot(this)">C2 · Libre</td>
+          <td class="slot-occ">Reservado</td>
+          <td class="slot-free" onclick="bookSlot(this)">C6 · Libre</td>
+        </tr>
+        <tr>
+          <td class="th">22:00</td>
+          <td class="slot-occ">Reservado</td>
+          <td class="slot-free" onclick="bookSlot(this)">C5 · Libre</td>
+          <td class="slot-occ">Reservado</td>
+          <td class="slot-free" onclick="bookSlot(this)">C4 · Libre</td>
+          <td class="slot-free" onclick="bookSlot(this)">C1 · Libre</td>
+          <td class="slot-occ">Reservado</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="sched-foot r">
+    <a class="btn btn-primary" href="https://wa.me/5493511234567" target="_blank">
+      Reservar por WhatsApp
+    </a>
+    <span class="sched-note">O llamá al <strong>(0351) 123-4567</strong></span>
+  </div>
+</section>
+
+<!-- ══════════════════ TESTIMONIALS ══════════════════ -->
+<section class="sec" id="testimonios">
+  <div class="r">
+    <div class="sec-eye">Comunidad</div>
+    <h2 class="sec-title">Lo que dicen<br>los socios</h2>
+  </div>
+  <div class="testi-grid sg">
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-qm">"</div>
+      <p class="testi-text">
+        Las canchas están impecables. La iluminación de noche es increíble, jugás como si fuera de día. Ya somos 4 amigos que venimos todos los jueves sin falta.
+      </p>
+      <div class="testi-author">
+        <img class="testi-av"
+          src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&dpr=1"
+          alt="Lucas">
+        <div>
+          <div class="testi-name">Lucas Méndez</div>
+          <div class="testi-role">Socio desde 2021</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-qm">"</div>
+      <p class="testi-text">
+        Empecé de cero con las clases y en seis meses ya juego torneos. Los profes son excelentes y el ambiente es muy bueno. Difícil encontrar otro club así.
+      </p>
+      <div class="testi-author">
+        <img class="testi-av"
+          src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&dpr=1"
+          alt="Vale">
+        <div>
+          <div class="testi-name">Valeria Torres</div>
+          <div class="testi-role">Socia desde 2023</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-qm">"</div>
+      <p class="testi-text">
+        El mejor club de zona norte, sin dudas. Las canchas cubiertas son un golazo para los días de lluvia. Y el bar para quedarse después del partido tiene muy buena onda.
+      </p>
+      <div class="testi-author">
+        <img class="testi-av"
+          src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&dpr=1"
+          alt="Facu">
+        <div>
+          <div class="testi-name">Facundo Rodríguez</div>
+          <div class="testi-role">Socio desde 2020</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CTA ══════════════════ -->
+<section class="cta-sec">
+  <p class="cta-lbl r">¿Listo para jugar?</p>
+  <h2 class="cta-title r">
+    Tu próximo<br>partido <em>empieza</em><br>acá
+  </h2>
+  <div class="cta-acts r">
+    <a class="btn btn-primary" href="#turnos">Reservar turno</a>
+    <a class="btn btn-outline" href="https://wa.me/5493511234567" target="_blank">Consultar membresía</a>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer class="footer">
+  <div class="f-brand">
+    <div class="f-brand-name">NORTE <b>·</b> PADEL</div>
+    <p>El club de referencia de Córdoba Norte. Canchas de nivel, comunidad de verdad, juego en serio.</p>
+  </div>
+  <div class="f-col">
+    <h4>Club</h4>
+    <ul>
+      <li><a href="#canchas">Nuestras canchas</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#turnos">Horarios</a></li>
+      <li><a href="#">Torneos</a></li>
+      <li><a href="#">Escuela de pádel</a></li>
+    </ul>
+  </div>
+  <div class="f-col">
+    <h4>Membresías</h4>
+    <ul>
+      <li><a href="#">Socio Básico</a></li>
+      <li><a href="#">Socio Premium</a></li>
+      <li><a href="#">Pack Empresas</a></li>
+      <li><a href="#">Clases particulares</a></li>
+    </ul>
+  </div>
+  <div class="f-col">
+    <h4>Contacto</h4>
+    <ul>
+      <li><a href="#">Av. Colón 4521, Córdoba</a></li>
+      <li><a href="tel:03511234567">(0351) 123-4567</a></li>
+      <li><a href="mailto:info@nortepadel.com.ar">info@nortepadel.com.ar</a></li>
+      <li><a href="#">Lun–Dom: 07:00–24:00</a></li>
+    </ul>
+  </div>
+</footer>
+
+<div class="f-bottom">
+  <p class="f-copy">© 2025 Norte Padel Club &nbsp;·&nbsp; Córdoba, Argentina</p>
+  <div class="socials">
+    <a class="soc" href="#" aria-label="Instagram">ig</a>
+    <a class="soc" href="#" aria-label="WhatsApp">wa</a>
+    <a class="soc" href="#" aria-label="Facebook">fb</a>
+  </div>
+</div>
+
+<!-- ══════════════════ JAVASCRIPT ══════════════════ -->
+<script>
+/* ─── NAV SCROLL ─── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('s', window.scrollY > 70);
+}, { passive: true });
+
+/* ─── HERO PARALLAX ─── */
+const heroImg = document.getElementById('heroImg');
+window.addEventListener('scroll', () => {
+  if (window.scrollY < window.innerHeight * 1.4) {
+    heroImg.style.transform = `translateY(${window.scrollY * 0.3}px)`;
+  }
+}, { passive: true });
+
+/* ─── INTERSECTION OBSERVER (reveal) ─── */
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); } });
+}, { threshold: 0.09, rootMargin: '0px 0px -48px 0px' });
+
+document.querySelectorAll('.r,.rl,.rr,.sg').forEach(el => revealObs.observe(el));
+
+/* ─── COUNTER ANIMATION ─── */
+function runCounter(el) {
+  const target  = parseInt(el.dataset.to);
+  const suffix  = el.dataset.sfx || '';
+  const dur     = 1800;
+  const start   = performance.now();
+  const tick = (now) => {
+    const p = Math.min((now - start) / dur, 1);
+    const v = Math.round((1 - Math.pow(1 - p, 3)) * target);
+    el.textContent = v.toLocaleString('es-AR') + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+const countObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { runCounter(e.target); countObs.unobserve(e.target); }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.stat-n[data-to]').forEach(el => countObs.observe(el));
+
+/* ─── MOBILE NAV ─── */
+const burger  = document.getElementById('burger');
+const mobNav  = document.getElementById('mobNav');
+let isOpen    = false;
+
+burger.addEventListener('click', () => {
+  isOpen = !isOpen;
+  if (isOpen) {
+    mobNav.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    burger.children[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+    burger.children[1].style.opacity   = '0';
+    burger.children[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+  } else {
+    closeMenu();
+  }
+});
+
+function closeMenu() {
+  isOpen = false;
+  mobNav.classList.remove('open');
+  document.body.style.overflow = '';
+  burger.children[0].style.transform = '';
+  burger.children[1].style.opacity   = '';
+  burger.children[2].style.transform = '';
+}
+
+/* ─── SMOOTH SCROLL FOR IN-PAGE LINKS ─── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      window.scrollTo({ top: target.offsetTop - nav.offsetHeight, behavior: 'smooth' });
+    }
+  });
+});
+
+/* ─── MAGNETIC BUTTONS ─── */
+document.querySelectorAll('.btn').forEach(btn => {
+  btn.addEventListener('mousemove', function(e) {
+    const r = this.getBoundingClientRect();
+    const x = (e.clientX - r.left - r.width  / 2) * 0.18;
+    const y = (e.clientY - r.top  - r.height / 2) * 0.18;
+    this.style.transform = `translate(${x}px, ${y}px)`;
+  });
+  btn.addEventListener('mouseleave', function() {
+    this.style.transform = '';
+  });
+});
+
+/* ─── SLOT BOOKING ─── */
+function bookSlot(cell) {
+  const row  = cell.closest('tr');
+  const hour = row ? row.querySelector('.th')?.textContent : '';
+  const slot = cell.textContent.replace('· Libre', '').trim();
+
+  /* Visual feedback */
+  const orig = cell.textContent;
+  cell.textContent  = 'Seleccionado ✓';
+  cell.style.color  = 'var(--accent)';
+  cell.style.borderLeftColor = 'var(--accent)';
+
+  setTimeout(() => {
+    cell.textContent = orig;
+    cell.style.color = '';
+    cell.style.borderLeftColor = '';
+  }, 2000);
+}
+
+/* ─── COURT CARD CURSOR ─── */
+document.querySelectorAll('.court').forEach(card => {
+  card.addEventListener('mousemove', function(e) {
+    const r  = this.getBoundingClientRect();
+    const mx = (e.clientX - r.left  - r.width  / 2) / r.width  * 6;
+    const my = (e.clientY - r.top   - r.height / 2) / r.height * 6;
+    this.style.transform = `perspective(900px) rotateY(${mx}deg) rotateX(${-my}deg) scale(1.01)`;
+  });
+  card.addEventListener('mouseleave', function() {
+    this.style.transform = '';
+  });
+});
+</script>
+</body>
+</html>
